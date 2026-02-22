@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 1A - First, Next, Then, Finally </title>
+  <link rel="stylesheet" href="../assets/css/templatemo-cyborg-gaming.css" />
+  <style>
+    body {
+      background-color: #b17efc;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #732dfc;
+      font-weight: 700;
+    }
+
+    p {
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .iframe-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 30px auto;
+      max-width: 100%;
+    }
+
+    iframe {
+      border-radius: 15px;
+      border: 3px solid #732dfc;
+      width: 90%;
+      max-width: 800px;
+      height: 480px;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background-color: #732dfc;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: 0.3s;
+      margin-bottom: 40px;
+    }
+
+    .btn-home:hover {
+      background-color: #732dfc;
+    }
+  </style>
+</head>
+<body>
+  <h2>First, Next, Then, Finally (Cuestionario)</h2>
+  <p></p>
+
+  <div class="iframe-container">
+    <iframe
+      id="gameFrame"
+      style="max-width:100%"
+    src="https://wordwall.net/es/embed/368fa6d5ecfd4b78b6069579939a1f26?"
+      width="500"
+      height="380"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- 🔙 Botones -->
+  <a href="../../browse.html" class="btn-home">⬅ Volver al Menú</a>
+  <button id="restartBtn" class="btn-home">🔁 Jugar de nuevo</button>
+
+  <script>
+    // Espera a que la página esté lista antes de asignar el evento
+    document.addEventListener("DOMContentLoaded", () => {
+      const restartBtn = document.getElementById("restartBtn");
+      const iframe = document.getElementById("gameFrame");
+
+      restartBtn.addEventListener("click", () => {
+        iframe.src = iframe.src; // 🔁 Reinicia el juego sin recargar toda la página
+      });
+    });
+  </script>
+</body>
+</html>

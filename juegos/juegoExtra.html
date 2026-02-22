@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Match the Word - Everyday Life & Actions</title>
+  <link rel="stylesheet" href="../assets/css/templatemo-cyborg-gaming.css" />
+  <style>
+    body {
+      background-color: #1f2122;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: #ec6090;
+      font-weight: 700;
+    }
+
+    p {
+      color: #ccc;
+    }
+
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(5, 100px);
+      gap: 15px;
+      justify-content: center;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #27292a;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s;
+      box-sizing: border-box;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .card img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .card.flipped {
+      background-color: #ec6090;
+      color: #fff;
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 20px;
+      color: #4CAF50;
+      font-weight: 600;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background-color: #ec6090;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-weight: 600;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-home:hover {
+      background-color: #ff79a7;
+    }
+
+    @media (max-width: 900px) {
+      .game-container { grid-template-columns: repeat(4, 90px); }
+    }
+    @media (max-width: 600px) {
+      .game-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .card { width: 100%; height: 90px; }
+    }
+  </style>
+</head>
+<body>
+  <h2>🎮 Match the Word: Everyday Life & Actions</h2>
+  <p>Empareja cada palabra con su imagen correspondiente</p>
+
+  <div class="game-container" id="game"></div>
+
+  <p class="message" id="message"></p>
+
+  <a href="../browse.html" class="btn-home">⬅ Volver al Menú</a>
+  <button id="restartBtn" class="btn-home" style="margin-left:10px; display:none;">🔁 Jugar de nuevo</button>
+
+  <script>
+    // 🔹 Lista de palabras e imágenes fijas coherentes
+    const allWords = [
+      { word: "Phone", img: "https://cdn-icons-png.flaticon.com/128/2482/2482945.png" },
+      { word: "Bread", img: "https://cdn-icons-png.flaticon.com/128/7093/7093198.png" },
+      { word: "Hat", img: "https://cdn-icons-png.flaticon.com/128/1785/1785366.png" },
+      { word: "Door", img: "https://cdn-icons-png.flaticon.com/128/9218/9218269.png" },
+      { word: "Chair", img: "https://cdn-icons-png.flaticon.com/128/2271/2271494.png" },
+      { word: "Book", img: "https://cdn-icons-png.flaticon.com/512/2232/2232688.png" },
+      { word: "Pen", img: "https://cdn-icons-png.flaticon.com/128/2493/2493530.png" },
+      { word: "Clock", img: "https://cdn-icons-png.flaticon.com/128/2997/2997985.png" },
+      { word: "Juice", img: "https://cdn-icons-png.flaticon.com/128/5825/5825340.png" },
+      { word: "Shoes", img: "https://cdn-icons-png.flaticon.com/128/2742/2742687.png" },
+      { word: "Table", img: "https://cdn-icons-png.flaticon.com/128/9844/9844825.png" },
+      { word: "Bag", img: "https://cdn-icons-png.flaticon.com/128/3275/3275938.png" },
+      { word: "Lamp", img: "https://cdn-icons-png.flaticon.com/128/2988/2988036.png" },
+      { word: "Computer", img: "https://cdn-icons-png.flaticon.com/128/1865/1865273.png" },
+      { word: "Window", img: "https://cdn-icons-png.flaticon.com/128/3731/3731921.png" },
+      { word: "Eat", img: "https://cdn-icons-png.flaticon.com/128/3475/3475150.png" },
+      { word: "Drink", img: "https://cdn-icons-png.flaticon.com/128/9047/9047082.png" },
+      { word: "Run", img: "https://cdn-icons-png.flaticon.com/128/6266/6266049.png" },
+      { word: "Sleep", img: "https://cdn-icons-png.flaticon.com/128/742/742927.png" },
+      { word: "Read", img: "https://cdn-icons-png.flaticon.com/128/4072/4072307.png" },
+      { word: "Write", img: "https://cdn-icons-png.flaticon.com/128/3837/3837450.png" },
+      { word: "Swim", img: "https://cdn-icons-png.flaticon.com/128/2371/2371508.png" },
+      { word: "Drive", img: "https://cdn-icons-png.flaticon.com/128/3410/3410350.png" },
+      { word: "Cook", img: "https://cdn-icons-png.flaticon.com/128/1027/1027128.png" },
+      { word: "Clean", img: "https://cdn-icons-png.flaticon.com/128/994/994928.png" },
+      { word: "Listen", img: "https://cdn-icons-png.flaticon.com/128/1005/1005531.png" },
+      { word: "Watch", img: "https://cdn-icons-png.flaticon.com/128/4695/4695312.png" },
+      { word: "Talk", img: "https://cdn-icons-png.flaticon.com/128/3002/3002655.png" },
+      { word: "Work", img: "https://cdn-icons-png.flaticon.com/128/2593/2593065.png" },
+      { word: "Play", img: "https://cdn-icons-png.flaticon.com/128/808/808439.png" }
+    ];
+
+    const gameContainer = document.getElementById("game");
+    const message = document.getElementById("message");
+    const restartBtn = document.getElementById("restartBtn");
+    let flipped = [];
+    let matched = 0;
+    let selected = [];
+
+    // 🔁 Inicializar juego
+    function initGame() {
+      gameContainer.innerHTML = "";
+      message.textContent = "";
+      restartBtn.style.display = "none";
+      flipped = [];
+      matched = 0;
+
+      // Escoge 10 al azar
+      selected = [...allWords].sort(() => Math.random() - 0.5).slice(0, 10);
+      let cards = [];
+      selected.forEach(item => {
+        cards.push({ type: "word", value: item.word });
+        cards.push({ type: "img", value: item.img, match: item.word });
+      });
+      cards.sort(() => Math.random() - 0.5);
+
+      // Renderizar
+      cards.forEach((card, index) => {
+        const div = document.createElement("div");
+        div.classList.add("card");
+        div.dataset.index = index;
+        div.addEventListener("click", () => flipCard(div, card));
+        gameContainer.appendChild(div);
+      });
+    }
+
+    function flipCard(div, card) {
+      if (flipped.length >= 2 || div.classList.contains("flipped") || div.classList.contains("hidden")) return;
+      div.classList.add("flipped");
+      div.innerHTML = card.type === "img" ? `<img src="${card.value}" alt="${card.match || ''}">` : card.value;
+      flipped.push({ div, card });
+      if (flipped.length === 2) setTimeout(checkMatch, 700);
+    }
+
+    function checkMatch() {
+      const [first, second] = flipped;
+      const isMatch =
+        (first.card.type === "word" && second.card.match === first.card.value) ||
+        (second.card.type === "word" && first.card.match === second.card.value);
+
+      if (isMatch) {
+        first.div.classList.add("hidden");
+        second.div.classList.add("hidden");
+        matched++;
+        if (matched === selected.length) {
+          message.textContent = "🎉 Great job! You matched all the words!";
+          restartBtn.style.display = "inline-block";
+        }
+      } else {
+        first.div.classList.remove("flipped");
+        second.div.classList.remove("flipped");
+        first.div.innerHTML = "";
+        second.div.innerHTML = "";
+      }
+      flipped = [];
+    }
+
+    restartBtn.addEventListener("click", initGame);
+    initGame(); // Iniciar juego al cargar
+  </script>
+</body>
+</html>
