@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <title>Crear Perfil - Aprende Inglés Jugando</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-cyborg-gaming.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+
+<body>
+
+  <!-- ***** Header ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+              <img src="assets/images/logo.png" alt="">
+            </a>
+
+            <!-- Menu -->
+            <ul class="nav">
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="browse.html">Misiones</a></li>
+              <li><a href="niveles.html">Niveles</a></li>
+              <li><a href="streams.html">Tienda</a></li>
+              <li><a href="ranking.html">Ranking</a></li>
+              <li><a href="profile.html">Perfil</a></li>
+            </ul>   
+            <a class='menu-trigger'><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ***** Page Content ***** -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+          <div class="heading-section">
+            <h4><em>Crear</em> tu perfil</h4>
+            <p>Guarda tu progreso y gana puntos personalizados.</p>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+              <div class="item" style="padding: 30px; text-align:center;">
+                
+                <form id="profileForm" class="form">
+                  <div class="form-group">
+                    <label style="font-weight:600;">Nombre o alias:</label>
+                    <input type="text" id="username" placeholder="Ej: EnglishHero" class="form-control" required>
+                  </div>
+
+                  <label style="margin-top:15px; font-weight:600;">Elige un avatar:</label>
+                  <div class="avatars">
+                    <img src="assets/images/avatar-01.jpg" alt="avatar1" class="avatar-option" data-avatar="1">
+                    <img src="assets/images/avatar-02.jpg" alt="avatar2" class="avatar-option" data-avatar="2">
+                    <img src="assets/images/avatar-03.jpg" alt="avatar3" class="avatar-option" data-avatar="3">
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" style="margin-top:25px;">Guardar perfil</button>
+                  <button type="button" id="skip" class="btn btn-secondary" style="margin-top:25px; margin-left:10px;">Jugar como invitado</button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ***** Footer ***** -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>© 2026 Aprende Inglés Jugando. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ***** Scripts ***** -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/tabs.js"></script>
+  <script src="assets/js/popup.js"></script>
+  <script src="assets/js/custom.js"></script>
+
+  <script>
+    // Selección de avatar
+    let selectedAvatar = null;
+    document.querySelectorAll('.avatar-option').forEach(img => {
+      img.addEventListener('click', () => {
+        document.querySelectorAll('.avatar-option').forEach(i => i.classList.remove('selected'));
+        img.classList.add('selected');
+        selectedAvatar = img.dataset.avatar;
+      });
+    });
+
+    // Guardar perfil
+    document.getElementById('profileForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('username').value.trim();
+      if (!name) return alert("Por favor escribe un nombre.");
+      const profile = { name, avatar: selectedAvatar || 1, puntos: 0, badges: [] };
+      localStorage.setItem('perfil', JSON.stringify(profile));
+      alert(`Perfil creado: ${name}`);
+      window.location.href = "profile.html";
+    });
+
+    // Jugar sin perfil
+    document.getElementById('skip').addEventListener('click', () => {
+      alert("Entrando como invitado. Tu progreso no se guardará.");
+      window.location.href = "index.html";
+    });
+  </script>
+
+  <style>
+    .avatars {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .avatars img {
+      width: 100px;
+      border-radius: 50%;
+      margin: 10px;
+      border: 3px solid transparent;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .avatars img:hover {
+      transform: scale(1.1);
+    }
+    .avatars img.selected {
+      border-color: #ec6090;
+      box-shadow: 0 0 10px #ec6090;
+    }
+  </style>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Mi Perfil - Aprende Inglés Jugando</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-cyborg-gaming.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+  <style>
+    .badge {
+      display: inline-block;
+      background-color: #ec6090;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 12px;
+      margin: 4px;
+      font-size: 14px;
+    }
+    .profile-info {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .profile-info img {
+      width: 120px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .main-border-button a {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ***** Header ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo">
+              <img src="assets/images/logo.png" alt="">
+            </a>
+            <ul class="nav">
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="browse.html">Juegos</a></li>
+              <li><a href="niveles.html">Niveles</a></li>
+              <li><a href="ranking.html">Insignias</a></li>
+              <li><a href="profile.html" class="active">Perfil <img src="assets/images/profile-header.jpg" alt=""></a></li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+          <div class="heading-section">
+            <h4><em>Mi</em> Perfil</h4>
+          </div>
+
+          <!-- ***** Perfil dinámico ***** -->
+          <div class="profile-info">
+            <div id="profileBox">
+              <!-- Aquí se carga dinámicamente la información del perfil -->
+            </div>
+            <div class="main-border-button" id="createProfileBtn" style="display:none;">
+              <a href="create-profile.html">Crear perfil</a>
+            </div>
+            <div class="main-border-button" id="deleteProfileBtn" style="display:none;">
+              <a id="deleteProfile">Borrar perfil</a>
+            </div>
+          </div>
+
+          <hr style="margin:40px 0; border-color:#444;">
+
+          <div class="heading-section">
+            <h4><em>Mis</em> Insignias</h4>
+          </div>
+          <div id="badges"></div>
+
+          <hr style="margin:40px 0; border-color:#444;">
+
+          <div class="heading-section">
+            <h4><em>Mis</em> Progresos</h4>
+            <p>Juega, gana puntos e incrementa tu nivel dentro de la plataforma.</p>
+          </div>
+          <h5>Puntos acumulados: <span id="puntos">0</span></h5>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>© 2026 Aprende Inglés Jugando. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/games.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const data = JSON.parse(localStorage.getItem('perfil'));
+      const box = document.getElementById('profileBox');
+      const createBtn = document.getElementById('createProfileBtn');
+      const deleteBtn = document.getElementById('deleteProfileBtn');
+      const puntosEl = document.getElementById('puntos');
+
+      if (data) {
+        // Perfil existente
+        box.innerHTML = `
+          <img src="assets/images/avatar-0${data.avatar || 1}.jpg" alt="avatar">
+          <h3>${data.name}</h3>
+          <p><strong>Estado:</strong> Activo</p>
+        `;
+        puntosEl.textContent = data.puntos || 0;
+        renderBadges(data.badges || []);
+        deleteBtn.style.display = 'inline-block';
+      } else {
+        // Sin perfil
+        box.innerHTML = `
+          <p>No tienes un perfil creado todavía.</p>
+          <p>Puedes <a href="crear-perfil.html">crear uno</a> o jugar como invitado.</p>
+        `;
+        createBtn.style.display = 'inline-block';
+      }
+
+      document.getElementById('deleteProfile')?.addEventListener('click', () => {
+        if (confirm("¿Seguro que deseas borrar tu perfil y progreso?")) {
+          localStorage.removeItem('perfil');
+          localStorage.removeItem('puntos');
+          localStorage.removeItem('badges');
+          alert("Perfil borrado correctamente.");
+          location.reload();
+        }
+      });
+    });
+
+    function renderBadges(badges) {
+      const cont = document.getElementById('badges');
+      if (!badges || badges.length === 0) {
+        cont.innerHTML = "<p>Aún no has conseguido insignias.</p>";
+      } else {
+        cont.innerHTML = badges.map(b => `<span class='badge'>${b}</span>`).join("");
+      }
+    }
+  </script>
+
+</body>
+</html>
