@@ -172,14 +172,30 @@
     }
   </script>
 
-<!-- Scripts -->
+  <!-- Scripts -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
 <script src="assets/js/isotope.min.js"></script>
 <script src="assets/js/owl-carousel.js"></script>
 <script src="assets/js/tabs.js"></script>
 <script src="assets/js/popup.js"></script>
 <script src="assets/js/custom.js"></script>
+
+  <script>
+    // ✅ Mantiene la animación del header sin dejar espacio vacío
+    document.addEventListener("DOMContentLoaded", function() {
+      const header = document.querySelector(".header-area");
+      let fakeBanner = document.querySelector(".main-banner");
+
+      // Efecto scroll como en la página principal
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 80) {
+          header.classList.add("background-header");
+        } else {
+          header.classList.remove("background-header");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

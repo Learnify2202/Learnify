@@ -110,24 +110,87 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* 🔧 Corrige el espacio superior extra debajo del menú */
+    .page-content {
+      margin-top: 0 !important;
+      padding-top: 20px !important;
+    }
+
+    /* ✅ Corrige el espacio fantasma del header sticky */
+    .header-area.header-sticky + .container,
+    .header-area.header-sticky + .page-content,
+    .header-area.header-sticky + div {
+      margin-top: 60px !important; /* 🔹 Ajuste perfecto para que el contenido suba */
+    }
+
+    @media (max-width: 992px) {
+      .header-area.header-sticky + .container,
+      .header-area.header-sticky + .page-content,
+      .header-area.header-sticky + div {
+        margin-top: 50px !important;
+      }
+    }
+    /* ----- CORRECCIÓN DEFINITIVA DEL ESPACIO ----- */
+
+/* Fija el header exactamente como lo necesita el template y evita solapamientos */
+.header-area.header-sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  /* si necesitas fondo semitransparente al hacer scroll, custom.js lo añade */
+}
+
+/* Asegura que el contenido no quede oculto bajo el header.
+   Ajusta el valor 60px al alto real de tu header si hace falta. */
+body {
+  padding-top: 60px !important;
+}
+
+/* Evita margen/padding extra del .page-content del template */
+.page-content {
+  margin-top: 40px !important;
+  padding-top: 60px !important;
+}
+
+/* Si aún hay un contenedor inmediato bajo el header que empuja, asegúralo */
+.header-area.header-sticky + .container,
+.header-area.header-sticky + .page-content,
+.header-area.header-sticky + div {
+  margin-top: 0 !important;
+}
+
+/* Mobile tweaks: menos espacio en pantallas pequeñas */
+@media (max-width: 992px) {
+  body {
+    padding-top: 55px !important;
+  }
+}
   </style>
+
 </head>
 
 <body>
   <!-- Header -->
   <header class="header-area header-sticky">
     <div class="container">
-      <nav class="main-nav">
-        <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Logo"></a>
-        <ul class="nav">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="browse.html">Juegos</a></li>
-          <li><a href="niveles.html">Niveles</a></li>
-          <li><a href="ranking.html" class="active">Insignias</a></li>
-          <li><a href="profile.html">Perfil</a></li>
-        </ul>
-        <a class='menu-trigger'><span>Menú</span></a>
-      </nav>
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Logo"></a>
+            <ul class="nav">
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="browse.html">Juegos</a></li>
+              <li><a href="niveles.html">Niveles</a></li>
+              <li><a href="ranking.html" class="active">Insignias</a></li>
+              <li><a href="profile.html">Perfil</a></li>
+            </ul>
+            <a class='menu-trigger'><span>Menú</span></a>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -181,16 +244,30 @@
     </div>
   </footer>
 
-  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
   <!-- Scripts -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
 <script src="assets/js/isotope.min.js"></script>
 <script src="assets/js/owl-carousel.js"></script>
 <script src="assets/js/tabs.js"></script>
 <script src="assets/js/popup.js"></script>
 <script src="assets/js/custom.js"></script>
+
+  <script>
+    // ✅ Mantiene la animación del header sin dejar espacio vacío
+    document.addEventListener("DOMContentLoaded", function() {
+      const header = document.querySelector(".header-area");
+      let fakeBanner = document.querySelector(".main-banner");
+
+      // Efecto scroll como en la página principal
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 80) {
+          header.classList.add("background-header");
+        } else {
+          header.classList.remove("background-header");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
